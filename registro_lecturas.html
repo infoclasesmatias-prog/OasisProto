@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registro de Lecturas</title>
+    <script>
+        async function enviarLectura() {
+            const contador_id = document.getElementById("contador_id").value;
+            const operario_id = document.getElementById("operario_id").value;
+            const valor = document.getElementById("valor").value;
+            const observaciones = document.getElementById("observaciones").value;
+
+            const lectura = {
+                contador_id: parseInt(contador_id),
+                operario_id: parseInt(operario_id),
+                valor: parseFloat(valor),
+                observaciones: observaciones
+            };
+
+            const response = await fetch("http://127.0.0.1:8000/lecturas", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(lectura)
+            });
+
+            const data = await response.json();
+            alert("Lectura registrada con ID: " + data.id);
+        }
+    </script>
+</head>
+<body>
+    <h1>Registro de Lecturas de Contadores</h1>
+    <form onsubmit="event.preventDefault(); enviarLectura();">
+        <label for="contador_id">ID del Contador:</label><br>
+        <input type="number" id="contador_id" required><br><br>
+
+        <label for="operario_id">ID del Operario:</label><br>
+        <input type="number" id="operario_id" required><br><br>
+
+        <label for="valor">Valor de Lectura:</label><br>
+        <input type="number" step="0.01" id="valor" required><br><br>
+
+        <label for="observaciones">Observaciones:</label><br>
+        <textarea id="observaciones"></textarea><br><br>
+
+        <button type="submit">Registrar Lectura</button>
+    </form>
+</body>
+</html>
